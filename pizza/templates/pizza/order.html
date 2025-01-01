@@ -1,0 +1,41 @@
+{% extends 'pizza/base.html' %}
+{% block 'body' %}
+    {% load widget_tweaks %}
+    <div class="container">
+        <h1>Order a pizza</h1>
+        <h2>{{ note }}</h2>
+        {% if created_pizza_pk %}
+        <a href="{% url 'edit_order' created_pizza_pk %}">Edit your Order</a>
+        {% endif %}
+        <!-- <form enctype="multipart/form-data"  action="{% url 'order' %}" method="post">  enctype is used to say to our form that we are going to upload some type of file -->
+        <!-- <form action="{% url 'order' %}" method="post" novalidate>    will not do local validation -->
+        <form action="{% url 'order' %}" method="post">
+
+            {% csrf_token %}
+            <!-- {{ pizzaform }} -->
+            <!-- {{ pizzaform.as_p }} -->
+            <!-- {{ pizzaform.as_table }} -->
+            <!-- {{ pizzaform.as_ul }} -->
+
+            {% for field in pizzaform %}
+            <div class="form-group">
+                {{ field.errors }}
+                {{ field.label_tag }}
+                {% render_field field class="form-control" %}
+            </div>
+            {% endfor %}
+            <input type="submit" value="Order Pizza">
+        </form>
+
+
+        <br><br>
+
+        <h3>Want more than one pizza?</h3>
+
+        <form action="{% url 'pizzas' %}" method="get">
+            {{ multiple_form }}
+            <input type="submit" value="Get pizzas">
+        </form>
+    </div>
+{% endblock %}
+
